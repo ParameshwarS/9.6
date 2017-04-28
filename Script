@@ -1,0 +1,27 @@
+p1 = LOAD 'user/acadgild/temperature.csv' USING PigStorage(',') AS 
+    (station:chararray,date:chararray,type:chararray,temperature:int);
+
+Problem 1:
+p2 = FILTER p1 BY type == 'TMIN';
+
+p3 = GROUP p2 BY station;
+
+p4 = FOREACH p3 GENERATE (group,MIN(p2.temperature));
+
+dump p4;
+
+Problem 2:
+p2 = FILTER p1 BY type == 'TMAX';
+
+p3 = GROUP p2 BY station;
+
+p4 = FOREACH p3 GENERATE (group,MAX(p2.temperature));
+
+dump p4;
+
+Problem 3:
+p2 = GROUP p1 BY station;
+
+p3 = FOREACH p2 GENERATE(group,COUNT(p1.type));
+
+dump p3;
